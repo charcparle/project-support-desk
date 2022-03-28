@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/userModel");
 
@@ -9,7 +10,7 @@ const User = require("../models/userModel");
 const registerUser = asyncHandler(async (req, res) => {
   // console.log(req.body)
   const { name, email, password } = req.body;
-  console.log(name, email, password);
+  // console.log(name, email, password);
 
   // Validation
   if (!name || !email || !password) {
@@ -39,6 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -55,7 +57,7 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Please include all fields");
   }
-  
+
   const user = await User.findOne({ email });
 
   // Check user password
@@ -64,6 +66,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      token: generateToken(user._id),
     });
   } else {
     res.status(401);
@@ -71,7 +74,26 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+// Generate Token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+};
+
+// @desc Get current user
+// @route /api/users/me
+// @access Private
+const getMe = asyncHandler(async (req, res) => {
+  // console.log(req.headers)
+  const user = {
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  };
+  res.status(200).json(user);
+});
+
 module.exports = {
   registerUser,
   loginUser,
+  getMe,
 };
