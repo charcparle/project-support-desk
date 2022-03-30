@@ -14,6 +14,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // Validation
   if (!name || !email || !password) {
+    console.log("One or more fields are missing")
     res.status(400);
     throw new Error("Please include all fields");
   }
