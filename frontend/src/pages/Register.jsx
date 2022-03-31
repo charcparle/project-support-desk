@@ -4,6 +4,7 @@ import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { register, reset } from "../features/auth/authSlice";
+import Spinner from "../components/Spinner"
 function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -53,6 +54,9 @@ function Register() {
     console.log("Form data submitted");
   };
 
+  if (isLoading) {
+    return <Spinner />
+  }
   return (
     <>
       <section className="heading">

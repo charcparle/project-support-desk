@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { login, reset } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner"
 function Login() {
   const [formData, setFormData] = useState({
     email: "",
@@ -40,6 +41,9 @@ function Login() {
     dispatch(login(userData));
     console.log("Form data submitted");
   };
+  if(isLoading){
+    return <Spinner />
+  }
   return (
     <>
       <section className="heading">
