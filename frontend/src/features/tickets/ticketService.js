@@ -1,5 +1,4 @@
 import axios from "axios";
-import { defaultEqualityCheck } from "reselect";
 
 const API_URL = "/api/tickets";
 

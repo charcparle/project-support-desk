@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createTicket, reset } from "../features/tickets/ticketSlice";
+import Spinner from "../components/Spinner"
 
 function NewTicket() {
   const { user } = useSelector((state) => state.auth);
@@ -36,7 +37,9 @@ function NewTicket() {
     dispatch(createTicket(ticketData));
     console.log("Form data submitted");
   };
-
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <>
       <section className="heading">
