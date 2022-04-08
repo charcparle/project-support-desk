@@ -40,6 +40,10 @@ const addNote = asyncHandler(async (req, res) => {
   }
   // Get ticket of the user
   const ticket = await Ticket.findById(req.params.ticketId);
+  if (!ticket) {
+      res.status(401)
+      throw new Error("Ticket not found")
+  }
   // Validate user for the ticket
   if (ticket.user.toString() !== req.user.id) {
     res.status(401);
