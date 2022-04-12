@@ -59,6 +59,7 @@ function Ticket() {
     console.log("Note submitted");
     closeModal();
     dispatch(addNote({ ticketId, noteText }));
+    setNoteText("")
   };
   useEffect(() => {
     return () => {
